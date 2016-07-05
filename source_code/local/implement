@@ -1,0 +1,49 @@
+#!/bin/bash
+#java -jar LOCAL.jar 3 sleep0.txt
+
+
+#./create_sleep_tasks sleep0.txt 10000 0
+
+
+for j in 0 10 1000 10000
+do
+
+if [ $j -eq 0 ]
+then 
+inst=10000
+elif [ $j -eq 10 ]
+then 
+inst=1000
+elif [ $j -eq 1000 ]
+then 
+inst=100
+else
+inst=10
+fi
+
+for i in 1 2 4 8 16
+do
+
+val=`expr $inst \* $i`
+./create_sleep_tasks "sleep$j$i.txt" $val $j
+
+printf "\t ---------------------Tasks of sleep $j with $val instruction ($inst per worker) for $i workers ----------------------\n"
+
+START=$(date +%s.%N)
+
+java -jar LOCAL.jar $i "sleep$j$i.txt"
+
+END=$(date +%s.%N)
+
+DIFF=$(echo "$END - $START" | bc)
+
+printf "Time for Execution Full Program for Thread count $i : $DIFF s \n"
+
+printf "\n\n"
+
+done
+
+done
+
+#./create_sleep_tasks sleep1000.txt 10000 1000
+#./create_sleep_tasks sleep10000.txt 10000 10000
