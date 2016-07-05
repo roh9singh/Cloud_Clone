@@ -1,0 +1,16 @@
+#!/bin/bash
+# $1 file name
+# $2 instructions
+# $3 time
+
+if [ -e $1 ]; then
+  echo "File $1 already exists!"
+else
+  COUNTER=1
+  until [  $COUNTER -gt $2 ]; do
+      #echo $COUNTER
+      #echo "$COUNTER sleep $3" >> $1		#for creating unique id
+      echo "sleep $3" >> $1					#for just the tasks
+      let COUNTER+=1
+  done        
+fi
